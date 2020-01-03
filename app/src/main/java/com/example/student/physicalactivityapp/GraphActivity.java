@@ -1,7 +1,6 @@
 package com.example.student.physicalactivityapp;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,15 +10,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
-    @Nullable
-    @BindView(R.id.btn_next)
-    Button btn_next;
+public class GraphActivity extends AppCompatActivity {
 
-    @Nullable
-    @OnClick(R.id.btn_next)
+    @BindView(R.id.btn_goToResults)
+    Button btn_goToResults;
+
+    @OnClick(R.id.btn_goToResults)
     void onClick(View view) {
-        Intent intent = new Intent(this, GraphActivity.class);
+        Intent intent = new Intent(this, ResultsActivity.class);
         Bundle bundle = new Bundle();
         intent.putExtras(bundle);
         startActivity(intent);
@@ -28,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_graph);
         ButterKnife.bind(this);
+
     }
 }
