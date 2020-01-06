@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     void onClickLoadData(View view) {
         //performFileSearch();
         dane = readDataFromSource();
+        btn_next.setEnabled(true);
     }
 
 

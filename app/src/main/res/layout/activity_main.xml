@@ -57,13 +57,15 @@
 
         />
     </RadioGroup>
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="220dp"
-            android:text="DALEJ"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:background="@color/colorPrimary"
+        android:text="DALEJ"
+        android:enabled="false"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
