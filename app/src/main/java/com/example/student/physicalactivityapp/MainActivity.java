@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    private ArrayList<DataModel> readText(String input) {
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
         File file = new File(input);
         StringBuilder text = new StringBuilder();
