@@ -12,6 +12,12 @@ import butterknife.OnClick;
 
 public class GraphActivity extends AppCompatActivity {
 
+    private float[] accelerometer_Time;
+    private float[] accelerometer_X;
+    private float[] accelerometer_Y;
+    private float[] accelerometer_Z;
+
+
     @BindView(R.id.btn_goToResults)
     Button btn_goToResults;
 
@@ -29,5 +35,14 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         ButterKnife.bind(this);
 
+        Bundle extras = getIntent().getExtras();
+        GetAccelerometerData(extras);
+    }
+
+    private void GetAccelerometerData(Bundle extras){
+        accelerometer_Time = extras.getFloatArray(DataModel.ACCELEROMETER+DataModel.TIME);
+        accelerometer_X = extras.getFloatArray(DataModel.ACCELEROMETER+DataModel.X);
+        accelerometer_Y = extras.getFloatArray(DataModel.ACCELEROMETER+DataModel.Y);
+        accelerometer_Z = extras.getFloatArray(DataModel.ACCELEROMETER+DataModel.Z);
     }
 }

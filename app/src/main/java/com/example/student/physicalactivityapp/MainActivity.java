@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_STORAGE = 1000;
     private static final int READ_REQUEST_CODE = 1000;
     public static String checkedRadioBtn = "";
+    private ArrayList<DataModel> dane;
+
     @Nullable
     @BindView(R.id.btn_next)
     Button btn_next;
@@ -51,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
     void onClick(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
         Bundle bundle = new Bundle();
+
+        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.TIME,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.TIME));
+        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.X,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.X));
+        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Y,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Y));
+        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Z,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Z));
+
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -59,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_addData)
     void onClickLoadData(View view) {
         //performFileSearch();
-        readDataFromSource();
+        dane = readDataFromSource();
     }
 
 
