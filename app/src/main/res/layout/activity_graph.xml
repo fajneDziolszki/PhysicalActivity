@@ -13,7 +13,7 @@
         android:id="@+id/file_txv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="PLIK.txt"
         android:textSize="20sp"
         android:textAlignment="center"
@@ -34,16 +34,16 @@
             android:text="Akcelerometr" />
 
         <RadioButton
-            android:id="@+id/gyroskope"
+            android:id="@+id/magnetometer"
             style="@style/Radio_buttons"
-            android:text="Żyroskop" />
+            android:text="Magnetometr" />
     </RadioGroup>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="300sp"
-        android:layout_marginTop="30sp"
+        android:layout_marginTop="10sp"
         android:layout_marginRight="10sp"
         android:layout_marginLeft="10sp"
         tools:layout_editor_absoluteX="8dp"
@@ -51,10 +51,19 @@
     </com.github.mikephil.charting.charts.LineChart>
 
     <Button
+        android:id="@+id/btn_Rysuj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Rysuj wykres"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+
+    <Button
         android:id="@+id/btn_goToResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="DALEJ"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"/>

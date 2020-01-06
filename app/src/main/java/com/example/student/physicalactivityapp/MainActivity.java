@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
         bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Y,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Y));
         bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Z,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Z));
 
-        bundle.putFloatArray(DataModel.GYROSKOPE+DataModel.TIME,DataModel.GetData(dane, DataModel.GYROSKOPE, DataModel.TIME));
-        bundle.putFloatArray(DataModel.GYROSKOPE+DataModel.X,DataModel.GetData(dane, DataModel.GYROSKOPE, DataModel.X));
-        bundle.putFloatArray(DataModel.GYROSKOPE+DataModel.Y,DataModel.GetData(dane, DataModel.GYROSKOPE, DataModel.Y));
-        bundle.putFloatArray(DataModel.GYROSKOPE+DataModel.Z,DataModel.GetData(dane, DataModel.GYROSKOPE, DataModel.Z));
+        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.TIME,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.TIME));
+        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.X,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.X));
+        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.Y,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Y));
+        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.Z,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Z));
 
         intent.putExtras(bundle);
         startActivity(intent);
