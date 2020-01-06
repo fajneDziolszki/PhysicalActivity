@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_STORAGE = 1000;
     private static final int READ_REQUEST_CODE = 1000;
-
+    public static String checkedRadioBtn = "";
     @Nullable
     @BindView(R.id.btn_next)
     Button btn_next;
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.btn_addData)
     Button btn_addData;
+
+    @Nullable
+    @BindView(R.id.RGroup)
+    RadioGroup radio_group;
+
 
     @Nullable
     @OnClick(R.id.btn_next)
@@ -66,10 +73,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setRadioButtonOption();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
 
         }
+    }
+
+    private void setRadioButtonOption() {
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.rb_chest:
+                        checkedRadioBtn = "chest";
+                        break;
+                    case R.id.rb_hip:
+                        checkedRadioBtn = "hip";
+                        break;
+                }
+            }
+        });
     }
 
     private String readText(String input) {
@@ -122,6 +146,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }
