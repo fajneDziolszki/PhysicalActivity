@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PhysicalActivity.iml" filepath="$PROJECT_DIR$/PhysicalActivity.iml" />
+      <module fileurl="file://C:\Users\patry\Desktop\KWDM\PhysicalActivity\PhysicalActivity.iml" filepath="C:\Users\patry\Desktop\KWDM\PhysicalActivity\PhysicalActivity.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\patry\Desktop\KWDM\PhysicalActivity\app\app.iml" filepath="C:\Users\patry\Desktop\KWDM\PhysicalActivity\app\app.iml" />
     </modules>
   </component>
 </project>
