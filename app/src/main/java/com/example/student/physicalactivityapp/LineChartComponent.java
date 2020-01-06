@@ -3,6 +3,7 @@ package com.example.student.physicalactivityapp;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -52,8 +53,9 @@ public class LineChartComponent {
         Legend l = mChart.getLegend();
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
-        l.setTextColor(Color.WHITE);
-        mChart.getLegend().setEnabled(false);
+        l.setTextColor(Color.BLACK);
+        mChart.getLegend().setEnabled(true);
+        
 
         return mChart;
     }
@@ -66,7 +68,7 @@ public class LineChartComponent {
         // get the legend (only possible after setting data)
     }
 
-    public static LineChart AddEntry(LineChart mChart, float value, float time, int datasetIndex, Integer color) {
+    public static LineChart AddEntry(LineChart mChart, float value, float time, int datasetIndex, Integer color, String sensorTypeValue) {
 
         LineData data = mChart.getData();
 
@@ -74,7 +76,7 @@ public class LineChartComponent {
             ILineDataSet set = data.getDataSetByIndex(datasetIndex);
 
             if (set == null) {
-                set = CreateSet(color,datasetIndex);
+                set = CreateSet(color,sensorTypeValue);
                 data.addDataSet(set);
             }
             set.addEntry(new Entry(time,value));
@@ -91,8 +93,8 @@ public class LineChartComponent {
         return mChart;
     }
 
-    private static LineDataSet CreateSet(Integer color,Integer datasetIndex){
-        LineDataSet set = new LineDataSet(null, String.valueOf(datasetIndex));
+    private static LineDataSet CreateSet(Integer color,String sensorTypeValue){
+        LineDataSet set = new LineDataSet(null, sensorTypeValue);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setLineWidth(3f);
         set.setColor(color);

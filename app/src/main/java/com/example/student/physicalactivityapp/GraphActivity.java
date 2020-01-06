@@ -150,9 +150,9 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < time.length; i++) {
-            LineChartComponent.AddEntry(chart,x[i],time[i],0, Color.RED);
-            LineChartComponent.AddEntry(chart,y[i],time[i],1, Color.GREEN);
-            LineChartComponent.AddEntry(chart,z[i],time[i],2, Color.BLUE);
+            LineChartComponent.AddEntry(chart,x[i],time[i],0, Color.RED, DataModel.X);
+            LineChartComponent.AddEntry(chart,y[i],time[i],1, Color.GREEN, DataModel.Y);
+            LineChartComponent.AddEntry(chart,z[i],time[i],2, Color.BLUE, DataModel.Z);
         }
 
         /*thread = new Thread(new Runnable() {
