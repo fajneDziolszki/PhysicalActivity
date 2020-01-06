@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -25,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @OnClick(R.id.btn_addData)
     void onClickLoadData(View view) {
-        performFileSearch();
+        //performFileSearch();
+        readDataFromSource();
     }
 
 
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String readText(String input) {
+    private ArrayList<DataModel> readText(String input) {
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
         File file = new File(input);
         StringBuilder text = new StringBuilder();
@@ -89,16 +86,13 @@ public class MainActivity extends AppCompatActivity {
 
                 dane.add(new DataModel(czujnik, czas, x, y, z));
 
-
-                text.append(line);
-                text.append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
 
         }
         //dane.get(2).x;
-        return text.toString();
+        return dane;
     }
 
     private void performFileSearch() {
@@ -123,5 +117,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private ArrayList<DataModel> readDataFromSource() {
+        InputStream is=getResources().openRawResource(R.raw.pati);
+        ArrayList<DataModel> dane = new ArrayList<DataModel>();
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(is, Charset.forName("UTF-8"))
+        );
+        String line="";
+        try {
+            while((line=reader.readLine()) !=null){
+                String[] parts = line.split(";");
+                String czujnik = parts[0]; // 004
+                String czas = parts[1]; // 034556
+                String x = parts[2]; // 004
+                String y = parts[3]; // 034556
+                String z = parts[4]; // 004
 
+                dane.add(new DataModel(czujnik, czas, x, y, z));
+            }
+        } catch (IOException e) {
+            Log.wtf("MyActivity", "Error reading data file on line" + line, e);
+            e.printStackTrace();
+        }
+        return dane;
+    }
 }
