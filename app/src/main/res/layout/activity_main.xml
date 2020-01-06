@@ -32,7 +32,10 @@
             android:textSize="30sp"
             />
 
-
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/RGroup">
     <RadioButton
         android:id="@+id/rb_chest"
         android:layout_width="250dp"
@@ -41,6 +44,7 @@
         android:layout_marginTop="10dp"
         android:text="klatka piersiowa"
         android:gravity="center"
+        android:checked="true"
     />
 
     <RadioButton
@@ -52,12 +56,12 @@
         android:text="obręcz biodrowa"
 
         />
-
+    </RadioGroup>
         <Button
             android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="270dp"
+            android:layout_marginTop="220dp"
             android:text="DALEJ"
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"/>

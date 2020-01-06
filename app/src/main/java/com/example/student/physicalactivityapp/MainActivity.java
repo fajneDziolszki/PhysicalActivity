@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_STORAGE = 1000;
     private static final int READ_REQUEST_CODE = 1000;
-
+    public static String checkedRadioBtn = "";
     @Nullable
     @BindView(R.id.btn_next)
     Button btn_next;
@@ -39,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.btn_addData)
     Button btn_addData;
+
+    @Nullable
+    @BindView(R.id.RGroup)
+    RadioGroup radio_group;
+
 
     @Nullable
     @OnClick(R.id.btn_next)
@@ -63,13 +70,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        setRadioButtonOption();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_STORAGE);
 
         }
     }
 
-    private ArrayList<DataModel> readText(String input) {
+    private void setRadioButtonOption() {
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.rb_chest:
+                        checkedRadioBtn = "chest";
+                        break;
+                    case R.id.rb_hip:
+                        checkedRadioBtn = "hip";
+                        break;
+                }
+            }
+        });
+    }
+
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
         File file = new File(input);
         StringBuilder text = new StringBuilder();
@@ -116,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     private ArrayList<DataModel> readDataFromSource() {
         InputStream is=getResources().openRawResource(R.raw.pati);
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
@@ -132,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 String x = parts[2]; // 004
                 String y = parts[3]; // 034556
                 String z = parts[4]; // 004
-
                 dane.add(new DataModel(czujnik, czas, x, y, z));
             }
         } catch (IOException e) {
