@@ -1,6 +1,9 @@
 package com.example.student.physicalactivityapp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Classificator {
 
@@ -9,7 +12,7 @@ public class Classificator {
         // Hold nearest neighbors.
         // First item is distance,
         // second class
-        ArrayList<DataModel> neighbors = new ArrayList<DataModel>();
+        ArrayList<Neighbor> neighbors = new ArrayList<Neighbor>();
 
         for (DataModel item : Items) {
 
@@ -30,8 +33,24 @@ public class Classificator {
         return FindMax(count);
     }
 
-    private ArrayList<Classes> CalculateNeighborsClass(ArrayList<DataModel> neighbors, int k) {
+    private ArrayList<Classes> CalculateNeighborsClass(ArrayList<Neighbor> neighbors, int k) {
         ArrayList<Classes> classificator = new ArrayList<Classes>();
+        classificator.add(new Classes(0,0));
+        classificator.add(new Classes(1,0));
+        classificator.add(new Classes(2,0));
+
+        for(int i=0; i<k;i++){
+            int classId = neighbors.get(i).model.czynnosc;
+            if(classId==0){
+                classificator.get(0).count+=1;
+            }
+            else if(classId==1){
+                classificator.get(1).count+=1;
+            }
+            else{
+                classificator.get(2).count+=1;
+            }
+        }
         return classificator;
     }
 
@@ -48,7 +67,36 @@ public class Classificator {
         return Math.sqrt(s);
     }
 
-    private ArrayList<DataModel> UpdateNeighbors(ArrayList<DataModel> list, DataModel item, double distance, int k) {
+    private ArrayList<Neighbor> UpdateNeighbors(ArrayList<Neighbor> list, DataModel item, double distance, int k) {
+        if (list.size() < k) {
+
+            //List is not full, add
+            // new item and sort
+            Neighbor neighbor= new Neighbor(item,distance);
+            list.add(neighbor);
+            Collections.sort(list, new Comparator<Neighbor>() {
+                @Override
+                public int compare(Neighbor neighbor, Neighbor t1) {
+                    return (int) (neighbor.distance - t1.distance);
+                }
+            });
+        }
+    else {
+
+            // List is full Check if new
+            // item should be entered
+            if (list.get(0).distance > distance) {
+                list.remove(0);
+                Neighbor neighbor = new Neighbor(item, distance);
+                list.add(neighbor);
+                Collections.sort(list, new Comparator<Neighbor>() {
+                    @Override
+                    public int compare(Neighbor neighbor, Neighbor t1) {
+                        return (int) (neighbor.distance - t1.distance);
+                    }
+                });
+            }
+        }
 
         return list;
     }

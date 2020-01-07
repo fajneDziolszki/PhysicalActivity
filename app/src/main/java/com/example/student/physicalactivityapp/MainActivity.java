@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int READ_REQUEST_CODE = 1000;
     public static String checkedRadioBtn = "chest";
     private ArrayList<DataModel> dane;
-
+    public static ArrayList<DataModel> readFileData;
     @Nullable
     @BindView(R.id.btn_next)
     Button btn_next;
@@ -115,19 +115,21 @@ public class MainActivity extends AppCompatActivity {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(";");
                 String czujnik = parts[0]; // 004
-                String czas = parts[1]; // 034556
-                String x = parts[2]; // 004
-                String y = parts[3]; // 034556
-                String z = parts[4]; // 004
+                if(czujnik.equals("0") || czujnik.equals("5")) {
+                    String czas = parts[1]; // 034556
+                    String x = parts[2]; // 004
+                    String y = parts[3]; // 034556
+                    String z = parts[4]; // 004
 
-                dane.add(new DataModel(czujnik, czas, x, y, z));
-
+                    dane.add(new DataModel(czujnik, czas, x, y, z));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
 
         }
         //dane.get(2).x;
+        readFileData=dane;
         return dane;
     }
 
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     dane.add(new DataModel(czujnik, czas, x, y, z));
                 }
             }
+            readFileData=dane;
         } catch (IOException e) {
             Log.wtf("MyActivity", "Error reading data file on line" + line, e);
             e.printStackTrace();
