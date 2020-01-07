@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             while((line=reader.readLine()) !=null){
                 String[] parts = line.split(";");
                 String czujnik = parts[0]; // 004
-                if(czujnik=="0" || czujnik=="5") {
+                if(czujnik.equals("0") || czujnik.equals("5")) {
                     String czas = parts[1]; // 034556
                     String x = parts[2]; // 004
                     String y = parts[3]; // 034556

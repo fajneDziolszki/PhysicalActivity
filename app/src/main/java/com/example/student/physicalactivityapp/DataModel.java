@@ -21,6 +21,7 @@ public class DataModel {
     String x, y, z;
     String czas;
     String czujnik;
+    int czynnosc;
 
     public DataModel(String czujnik, String czas, String x, String y, String z) {
         this.x = x;
@@ -30,6 +31,12 @@ public class DataModel {
         this.czujnik = czujnik;
     }
 
+    public DataModel(int czynnosc, String x, String y, String z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.czynnosc = czynnosc;
+    }
     //Metody ustawia i zwracania.
     public String getx() {
         return x;
