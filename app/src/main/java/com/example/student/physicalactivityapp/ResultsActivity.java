@@ -1,5 +1,6 @@
 package com.example.student.physicalactivityapp;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +37,7 @@ public class ResultsActivity extends AppCompatActivity {
     private float[] mag_Class;
     boolean plotData = true;
     @BindView(R.id.chart)
-    BarChart chart;
+    LineChart chart;
 
     @BindView(R.id.sensor_options)
     RadioGroup sensorOption;
@@ -47,21 +48,22 @@ public class ResultsActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_Rysuj)
     Button btn_Rysuj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
         ButterKnife.bind(this);
         option = DataModel.ACCELEROMETER;
-
+        LineChartComponent.InitializeChart(chart);
         String result = MainActivity.checkedRadioBtn;
         ArrayList<DataModel> data = MainActivity.readFileData;
         ReadTrainFile(result);
-        ArrayList<DataModel> dataForAcc=ReturnGroupedListForSensor(data,"0");
-        ArrayList<DataModel> dataForMagnetometer=ReturnGroupedListForSensor(data,"5");
-        ArrayList<DataModel> resultAcc=TrainData(dataForAcc,data1);
-        ArrayList<DataModel> resultMag=TrainData(dataForMagnetometer,data2);
-        SetData(resultAcc,resultMag);
+        ArrayList<DataModel> dataForAcc = ReturnGroupedListForSensor(data, "0");
+        ArrayList<DataModel> dataForMagnetometer = ReturnGroupedListForSensor(data, "5");
+        ArrayList<DataModel> resultAcc = TrainData(dataForAcc, data1);
+        ArrayList<DataModel> resultMag = TrainData(dataForMagnetometer, data2);
+        SetData(resultAcc, resultMag);
         InitOnCheckedChange();
     }
 
@@ -70,69 +72,63 @@ public class ResultsActivity extends AppCompatActivity {
         acc_Class = new float[resultAcc.size()];
         mag_Time = new float[resultMag.size()];
         mag_Class = new float[resultMag.size()];
-        for(int i=0;i< resultAcc.size();i++){
-            acc_Time[i]=Float.parseFloat(resultAcc.get(i).czas);
-            acc_Class[i]=resultAcc.get(i).czynnosc;
+        for (int i = 0; i < resultAcc.size(); i++) {
+            acc_Time[i] = Float.parseFloat(resultAcc.get(i).czas);
+            acc_Class[i] = resultAcc.get(i).czynnosc;
         }
-        for(int i=0;i< resultMag.size();i++){
-            mag_Time[i]=Float.parseFloat(resultMag.get(i).czas);
-            mag_Class[i]=resultMag.get(i).czynnosc;
+        for (int i = 0; i < resultMag.size(); i++) {
+            mag_Time[i] = Float.parseFloat(resultMag.get(i).czas);
+            mag_Class[i] = resultMag.get(i).czynnosc;
         }
     }
 
     @OnClick(R.id.btn_Rysuj)
-    void onClickBtn(View view){
+    void onClickBtn(View view) {
         StopPlot();
         DrawChart(option);
     }
-    public void StopPlot(){
 
-        BarData data = chart.getData();
+    public void StopPlot() {
 
-        if(data!=null){
+        LineData data = chart.getData();
+
+        if (data != null) {
             chart.clear();
+            LineChartComponent.InitializeChart(chart);
         }
     }
 
-    private void DrawChart(String type){
-        ArrayList<BarEntry> values = new ArrayList<>();
-        switch(type) {
+    private void DrawChart(String type) {
+        YAxis axis = chart.getAxisLeft();
+
+        axis.setAxisMinimum(0);
+        axis.setAxisMaximum(4);
+        axis.setLabelCount(4);
+        switch (type) {
             case "0":
                 for (int i = 0; i < acc_Time.length; i++) {
-                    values.add(new BarEntry(acc_Time[i], acc_Class[i]));
+                    LineChartComponent.AddEntry(chart, acc_Class[i], acc_Time[i], 0, Color.RED, "Czynność");
                 }
                 break;
             case "5":
                 for (int i = 0; i < mag_Time.length; i++) {
-                    values.add(new BarEntry(mag_Time[i], mag_Class[i]));
+                    LineChartComponent.AddEntry(chart, mag_Class[i], mag_Time[i], 0, Color.BLUE, "Czynność");
                 }
                 break;
         }
-        BarDataSet set1;
-            set1 = new BarDataSet(values, "Klasyfikacja czynności");
-
-            set1.setDrawIcons(false);
-
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
-
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
-            data.setBarWidth(0.9f);
-
-            chart.setData(data);
     }
-    public void InitOnCheckedChange(){
+
+    public void InitOnCheckedChange() {
         sensorOption.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 StopPlot();
-                switch(checkedId){
+                switch (checkedId) {
                     case R.id.accelerometer:
-                        option=DataModel.ACCELEROMETER;
+                        option = DataModel.ACCELEROMETER;
                         break;
                     case R.id.magnetometer:
-                        option=DataModel.MAGNETOMETER;
+                        option = DataModel.MAGNETOMETER;
                         break;
                 }
             }
@@ -141,17 +137,17 @@ public class ResultsActivity extends AppCompatActivity {
 
     private ArrayList<DataModel> TrainData(ArrayList<DataModel> list, ArrayList<DataModel> data2) {
         Classificator classificator = new Classificator();
-        for(DataModel item:list){
-            int classItem = classificator.Classify(item,5,data2);
-            item.czynnosc=classItem;
+        for (DataModel item : list) {
+            int classItem = classificator.Classify(item, 5, data2);
+            item.czynnosc = classItem;
         }
         return list;
     }
 
     private ArrayList<DataModel> ReturnGroupedListForSensor(ArrayList<DataModel> data, String s) {
         ArrayList<DataModel> list = new ArrayList<DataModel>();
-        for(DataModel dataItem:data){
-            if(dataItem.czujnik.equals(s)){
+        for (DataModel dataItem : data) {
+            if (dataItem.czujnik.equals(s)) {
                 list.add(dataItem);
             }
         }
@@ -174,22 +170,21 @@ public class ResultsActivity extends AppCompatActivity {
             StringBuilder text = new StringBuilder();
             if (list.length > 0) {
                 for (String file : list) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(path+"/"+file)));
+                    BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open(path + "/" + file)));
                     String line;
                     while ((line = br.readLine()) != null) {
                         String[] parts = line.split(";");
                         String czujnik = parts[0]; // 004
-                        if(czujnik.equals("0") || czujnik.equals("5")) {
+                        if (czujnik.equals("0") || czujnik.equals("5")) {
                             String czas = parts[1]; // 034556
                             int czynnosc = ReturnClass(czas, path + "/" + file);
                             String x = parts[2]; // 004
                             String y = parts[3]; // 034556
                             String z = parts[4]; // 004
-                        if(czujnik.equals("0")) {
-                            data1.add(new DataModel(czynnosc, x, y, z));
-                        }
-                        else
-                            data2.add(new DataModel(czynnosc, x, y, z));
+                            if (czujnik.equals("0")) {
+                                data1.add(new DataModel(czynnosc, x, y, z));
+                            } else
+                                data2.add(new DataModel(czynnosc, x, y, z));
                         }
                     }
                 }
@@ -204,22 +199,20 @@ public class ResultsActivity extends AppCompatActivity {
         //1-siedzienie
         //2-spacer
         int timeInt = Integer.parseInt(czas);
-        int fistTime=10000;
-        int secondTime=20000;
-        int thirdTime=30000;
-        if(path=="kieszen_akcelerometr/ang.txt" || path=="kieszen_akcelerometr/kla.txt"){
-            fistTime+=10000;
-            secondTime+=10000;
-            thirdTime+=10000;
+        int fistTime = 10000;
+        int secondTime = 20000;
+        int thirdTime = 30000;
+        if (path == "kieszen_akcelerometr/ang.txt" || path == "kieszen_akcelerometr/kla.txt") {
+            fistTime += 10000;
+            secondTime += 10000;
+            thirdTime += 10000;
         }
-        if(timeInt<=fistTime || (timeInt>secondTime && timeInt<=thirdTime)){
+        if (timeInt <= fistTime || (timeInt > secondTime && timeInt <= thirdTime)) {
             return 0;
-        }
-        else if(timeInt>fistTime && timeInt<=secondTime){
+        } else if (timeInt > fistTime && timeInt <= secondTime) {
             return 1;
 
-        }
-        else
+        } else
             return 2;
     }
 }
