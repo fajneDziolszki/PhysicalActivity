@@ -54,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GraphActivity.class);
         Bundle bundle = new Bundle();
 
-        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.TIME,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.TIME));
-        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.X,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.X));
-        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Y,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Y));
-        bundle.putFloatArray(DataModel.ACCELEROMETER+DataModel.Z,DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Z));
+        bundle.putFloatArray(DataModel.ACCELEROMETER + DataModel.TIME, DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.TIME));
+        bundle.putFloatArray(DataModel.ACCELEROMETER + DataModel.X, DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.X));
+        bundle.putFloatArray(DataModel.ACCELEROMETER + DataModel.Y, DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Y));
+        bundle.putFloatArray(DataModel.ACCELEROMETER + DataModel.Z, DataModel.GetData(dane, DataModel.ACCELEROMETER, DataModel.Z));
 
-        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.TIME,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.TIME));
-        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.X,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.X));
-        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.Y,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Y));
-        bundle.putFloatArray(DataModel.MAGNETOMETER+DataModel.Z,DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Z));
+        bundle.putFloatArray(DataModel.MAGNETOMETER + DataModel.TIME, DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.TIME));
+        bundle.putFloatArray(DataModel.MAGNETOMETER + DataModel.X, DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.X));
+        bundle.putFloatArray(DataModel.MAGNETOMETER + DataModel.Y, DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Y));
+        bundle.putFloatArray(DataModel.MAGNETOMETER + DataModel.Z, DataModel.GetData(dane, DataModel.MAGNETOMETER, DataModel.Z));
 
         intent.putExtras(bundle);
         startActivity(intent);
@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @OnClick(R.id.btn_addData)
     void onClickLoadData(View view) {
-
-        dane = readDataFromSource();
+        performFileSearch();
+        //dane = readDataFromSource();
         btn_next.setEnabled(true);
-        Toast.makeText(this,"Dane zostały wczytane.",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"Dane zostały wczytane.",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -92,10 +92,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRadioButtonOption() {
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId){
+                switch (checkedId) {
                     case R.id.rb_chest:
                         checkedRadioBtn = "chest";
                         break;
@@ -106,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private ArrayList<DataModel> readText(String input) {
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
         File file = new File(input);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(";");
                 String czujnik = parts[0]; // 004
-                if(czujnik.equals("0") || czujnik.equals("5")) {
+                if (czujnik.equals("0") || czujnik.equals("5")) {
                     String czas = parts[1]; // 034556
                     String x = parts[2]; // 004
                     String y = parts[3]; // 034556
@@ -130,8 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
         //dane.get(2).x;
-        readFileData=dane;
+        readFileData = dane;
         return dane;
+
+
     }
 
     private void performFileSearch() {
@@ -151,22 +153,24 @@ public class MainActivity extends AppCompatActivity {
                 String path = uri.getPath();
                 path = path.substring(path.indexOf(":") + 1);
                 readText(path);
-                Toast.makeText(this, "" + path, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Dane zostały wczytane.", Toast.LENGTH_SHORT).show();
+                dane = readText(path);
             }
         }
     }
+
     private ArrayList<DataModel> readDataFromSource() {
-        InputStream is=getResources().openRawResource(R.raw.pati);
+        InputStream is = getResources().openRawResource(R.raw.pati);
         ArrayList<DataModel> dane = new ArrayList<DataModel>();
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(is, Charset.forName("UTF-8"))
         );
-        String line="";
+        String line = "";
         try {
-            while((line=reader.readLine()) !=null){
+            while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
                 String czujnik = parts[0]; // 004
-                if(czujnik.equals("0") || czujnik.equals("5")) {
+                if (czujnik.equals("0") || czujnik.equals("5")) {
                     String czas = parts[1]; // 034556
                     String x = parts[2]; // 004
                     String y = parts[3]; // 034556
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     dane.add(new DataModel(czujnik, czas, x, y, z));
                 }
             }
-            readFileData=dane;
+            readFileData = dane;
         } catch (IOException e) {
             Log.wtf("MyActivity", "Error reading data file on line" + line, e);
             e.printStackTrace();
