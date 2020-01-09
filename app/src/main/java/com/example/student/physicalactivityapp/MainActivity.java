@@ -71,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
     @Nullable
     @OnClick(R.id.btn_addData)
     void onClickLoadData(View view) {
-        //performFileSearch();
+
         dane = readDataFromSource();
         btn_next.setEnabled(true);
+        Toast.makeText(this,"Dane zostały wczytane.",Toast.LENGTH_SHORT).show();
     }
 
 

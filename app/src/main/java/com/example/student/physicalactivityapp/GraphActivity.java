@@ -55,7 +55,7 @@ public class GraphActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_goToResults)
     void onClick(View view) {
-        Intent intent = new Intent(this, ResultsActivity.class);
+        Intent intent = new Intent(this, WaitActivity.class);
         Bundle bundle = new Bundle();
         intent.putExtras(bundle);
         startActivity(intent);
